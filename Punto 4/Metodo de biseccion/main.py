@@ -1,5 +1,6 @@
 import math
 from Punto import Punto
+
 def main():
     print("Punto A")
     punto_a = Punto(101965.783, 101478.649, 63.25)
@@ -24,16 +25,9 @@ def main():
     de = distancia_ap * math.sin(math.radians(azimut))
     
     # Ajustar coordenadas según el cuadrante
-    if 0 <= azimut < 180:  # Movimiento hacia el norte
-        np = punto_a.y + dn  # Sumar dn
-    else:  # Movimiento hacia el sur
-        np = punto_a.y - dn  # Restar dn
-
-    if 0 <= azimut < 90 or 270 < azimut < 360:  # Movimiento hacia el este
-        ne = punto_a.x + de  # Sumar de
-    else:  # Movimiento hacia el oeste
-        ne = punto_a.x - de  # Restar de
-
+    np = punto_a.y + dn 
+    ne = punto_a.x - de
+    
     print("Norte de P:", np)
     print("Este de P:", ne)
 
