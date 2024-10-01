@@ -1,4 +1,5 @@
 import math
+import matplotlib.pyplot as plt
 from Punto import Punto
 
 def main():
@@ -30,6 +31,27 @@ def main():
     
     print("Norte de P:", np)
     print("Este de P:", ne)
+    
+    # Graficar
+    plt.figure(figsize=(12, 8))  # Aumenta el tamaño de la figura
+    plt.plot([punto_a.x, punto_b.x], [punto_a.y, punto_b.y], marker='o', color='b', label='Línea entre A y B')
+    plt.plot([punto_a.x, np], [punto_a.y, ne], marker='o', color='r', label='Línea entre A y P')  # Línea de A a P
+    plt.text(punto_a.x, punto_a.y, 'A', fontsize=12, ha='right')
+    plt.text(punto_b.x, punto_b.y, 'B', fontsize=12, ha='right')
+    plt.text(np, ne, 'P', fontsize=12, ha='right')  # Etiqueta para P
 
+    # Ajustar límites de los ejes
+    plt.xlim(101900, 102000)  # Ajusta según tus datos
+    plt.ylim(101400, 101500)  # Ajusta según tus datos
+
+    plt.title('Gráfica de Puntos A, B y P')
+    plt.xlabel('Coordenada X')
+    plt.ylabel('Coordenada Y')
+    plt.axhline(0, color='black', linewidth=0.5, ls='--')
+    plt.axvline(0, color='black', linewidth=0.5, ls='--')
+    plt.grid(color='gray', linestyle='--', linewidth=0.5)
+    plt.legend()
+    plt.show()
+    
 if __name__ == "__main__":
     main()
