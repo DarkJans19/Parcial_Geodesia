@@ -32,19 +32,41 @@ def main():
     print("Norte de P:", np)
     print("Este de P:", ne)
     
-    # Graficar
-    plt.figure(figsize=(12, 8))  # Aumenta el tamaño de la figura
+    # Calcular los valores mínimos y máximos para los ejes X e Y para que sea mas facil graficar en dado caso
+    # Puede que los limites queden disparejos y la grafica se vea extremadamente rara
+    x_min = min(punto_a.x, punto_b.x, np) - 50  # Restamos 50 para margen
+    x_max = max(punto_a.x, punto_b.x, np) + 50  # Sumamos 50 para margen
+    y_min = min(punto_a.y, punto_b.y, ne) - 50  # Restamos 50 para margen
+    y_max = max(punto_a.y, punto_b.y, ne) + 50  # Sumamos 50 para margen
+
+    # Graficamos todo
+    plt.figure(figsize=(12, 8))
+
+    # Línea entre A y B
     plt.plot([punto_a.x, punto_b.x], [punto_a.y, punto_b.y], marker='o', color='b', label='Línea entre A y B')
-    plt.plot([punto_a.x, np], [punto_a.y, ne], marker='o', color='r', label='Línea entre A y P')  # Línea de A a P
+
+    # Línea entre A y P
+    plt.plot([punto_a.x, np], [punto_a.y, ne], marker='o', color='r', label='Línea entre A y P')
+
+    # Proyecciones verticales y horizontales para la línea entre A y B
+    plt.plot([punto_a.x, punto_a.x], [punto_a.y, punto_b.y], linestyle='--', color='g', label='Proyección vertical AB')  # Vertical
+    plt.plot([punto_a.x, punto_b.x], [punto_b.y, punto_b.y], linestyle='--', color='g', label='Proyección horizontal AB')  # Horizontal
+
+    # Proyecciones verticales y horizontales para la línea entre A y P
+    plt.plot([punto_a.x, punto_a.x], [punto_a.y, ne], linestyle='--', color='orange', label='Proyección vertical AP')  # Vertical
+    plt.plot([punto_a.x, np], [ne, ne], linestyle='--', color='orange', label='Proyección horizontal AP')  # Horizontal
+
+    # Etiquetas para los puntos
     plt.text(punto_a.x, punto_a.y, 'A', fontsize=12, ha='right')
     plt.text(punto_b.x, punto_b.y, 'B', fontsize=12, ha='right')
-    plt.text(np, ne, 'P', fontsize=12, ha='right')  # Etiqueta para P
+    plt.text(np, ne, 'P', fontsize=12, ha='right')
 
-    # Ajustar límites de los ejes
-    plt.xlim(101900, 102000)  # Ajusta según tus datos
-    plt.ylim(101400, 101500)  # Ajusta según tus datos
+    # Ajustamos los limites a partir de lo que hicimos un poco mas arriba
+    plt.xlim(x_min, x_max)
+    plt.ylim(y_min, y_max)
 
-    plt.title('Gráfica de Puntos A, B y P')
+    # Esta parte solo hace que la grafica se vea un poco mas bonita
+    plt.title('Gráfica de Puntos A, B y P con Proyecciones')
     plt.xlabel('Coordenada X')
     plt.ylabel('Coordenada Y')
     plt.axhline(0, color='black', linewidth=0.5, ls='--')
