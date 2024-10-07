@@ -17,7 +17,9 @@ class Punto:
     # En este caso b son los valores del otro punto
     def distancia(self, b: 'Punto'):
         diferencia_x = self.diferencia_x(b)
+        print("diferencia_x:", diferencia_x)
         diferencia_y = self.diferencia_y(b)
+        print("diferencia y:",diferencia_y)
         distancia = pow(diferencia_x, 2) + pow(diferencia_y, 2)
         return math.sqrt(distancia)
     
@@ -25,7 +27,7 @@ class Punto:
     def calcular_AzAB(self, b: 'Punto') -> float:
         diferencia_x = self.diferencia_x(b)
         diferencia_y = self.diferencia_y(b)
-        AzAB = math.atan2(diferencia_y, diferencia_x)
+        AzAB = math.atan2(diferencia_x, diferencia_y)
         return math.degrees(AzAB)
     
     def calcular_azimut(self, b: 'Punto'):

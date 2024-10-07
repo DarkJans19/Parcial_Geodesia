@@ -6,9 +6,9 @@ def main():
     print("Punto A")
     # En caso de que se quieran puntos en especifico se pueden reemplazar los valores de la siguiente manera
     # punto_a = Punto(float(input()), float(input()), float(input()))
-    punto_a = Punto(101965.783, 101478.649, 63.25)
+    punto_a = Punto(101478.649, 101965.783, 63.25)
     print("Punto B")
-    punto_b = Punto(101913.537, 101435.794, 90.0117)
+    punto_b = Punto(101435.794, 101913.537, 90.0117)
     
     distancia = punto_a.distancia(punto_b)
     print("Distancia entre dos puntos: ", distancia)
@@ -25,7 +25,9 @@ def main():
     
     # Cálculo de Norte (dn) y Este (de) de P
     dn = distancia_ap * math.cos(math.radians(azimut))
+    print("dn:", dn)
     de = distancia_ap * math.sin(math.radians(azimut))
+    print("de", de)
     
     # Ajustar coordenadas según el cuadrante
     np = punto_a.y + dn 
