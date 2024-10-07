@@ -1,6 +1,6 @@
 from CoordenadaGMS import CoordenadaGMS
 
-class punto:
+class Punto:
     def __init__(self, x: CoordenadaGMS, y: CoordenadaGMS):
         self.x = x
         self.y = y
