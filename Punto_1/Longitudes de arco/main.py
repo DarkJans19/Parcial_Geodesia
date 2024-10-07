@@ -32,5 +32,6 @@ def main():
 
     longitud_arco_paralelo = SistemaWGS84.calcular_longitud_arco_paralelo(delta_x, punto_a_y,e)
     print("Longitud_arco_paralelo:", longitud_arco_paralelo)
+    
 if __name__ == "__main__":
     main()
