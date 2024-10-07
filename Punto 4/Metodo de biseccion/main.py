@@ -38,45 +38,45 @@ def main():
     
     # Calcular los valores mínimos y máximos para los ejes X e Y para que sea mas facil graficar en dado caso
     # Puede que los limites queden disparejos y la grafica se vea extremadamente rara
-    x_min = min(punto_a.x, punto_b.x, np) - 50  # Restamos 50 para margen
-    x_max = max(punto_a.x, punto_b.x, np) + 50  # Sumamos 50 para margen
-    y_min = min(punto_a.y, punto_b.y, ne) - 50  # Restamos 50 para margen
-    y_max = max(punto_a.y, punto_b.y, ne) + 50  # Sumamos 50 para margen
+    # Crear la figura y los ejes
+    fig, ax = plt.subplots()
+    
+    # Desactivar notación científica para los ejes
+    ax.ticklabel_format(style='plain', useOffset=False)
 
-    # Graficamos todo
-    plt.figure(figsize=(12, 8))
+    # Ajustar los límites del gráfico
+    ax.set_xlim([min(punto_a.x, punto_b.x, ne) - 20, max(punto_a.x, punto_b.x, ne) + 20])
+    ax.set_ylim([min(punto_a.y, punto_b.y, np) - 20, max(punto_a.y, punto_b.y, np) + 20])
 
-    # Línea entre A y B
-    plt.plot([punto_a.x, punto_b.x], [punto_a.y, punto_b.y], marker='o', color='b', label='Línea entre A y B')
+    # Graficar los puntos A, B y P
+    ax.scatter(punto_a.x, punto_a.y, color='red', label='Punto A', zorder=5)
+    ax.scatter(punto_b.x, punto_b.y, color='blue', label='Punto B', zorder=5)
+    ax.scatter(ne, np, color='green', label='Punto P', zorder=5)
 
-    # Línea entre A y P
-    plt.plot([punto_a.x, np], [punto_a.y, ne], marker='o', color='r', label='Línea entre A y P')
+    # Añadir etiquetas a los puntos A, B y P
+    ax.text(punto_a.x, punto_a.y, 'A', fontsize=12, verticalalignment='bottom', horizontalalignment='right', color='red')
+    ax.text(punto_b.x, punto_b.y, 'B', fontsize=12, verticalalignment='bottom', horizontalalignment='right', color='blue')
+    ax.text(ne, np, 'P', fontsize=12, verticalalignment='bottom', horizontalalignment='right', color='green')
 
-    # Proyecciones verticales y horizontales para la línea entre A y B
-    plt.plot([punto_a.x, punto_a.x], [punto_a.y, punto_b.y], linestyle='--', color='g', label='Proyección vertical AB')  # Vertical
-    plt.plot([punto_a.x, punto_b.x], [punto_b.y, punto_b.y], linestyle='--', color='g', label='Proyección horizontal AB')  # Horizontal
+    # Dibujar las líneas entre los puntos A y B, y A y P
+    ax.plot([punto_a.x, punto_b.x], [punto_a.y, punto_b.y], color='blue', label='Línea entre A y B')
+    ax.plot([punto_a.x, ne], [punto_a.y, np], color='red', label='Línea entre A y P')  
+    ax.plot([punto_b.x, ne], [punto_b.y, np], color = 'black', label = 'Linea entre B y P')
 
-    # Proyecciones verticales y horizontales para la línea entre A y P
-    plt.plot([punto_a.x, punto_a.x], [punto_a.y, ne], linestyle='--', color='orange', label='Proyección vertical AP')  # Vertical
-    plt.plot([punto_a.x, np], [ne, ne], linestyle='--', color='orange', label='Proyección horizontal AP')  # Horizontal
+    # Dibujar las proyecciones verticales y horizontales con colores diferentes
+    ax.plot([punto_a.x, punto_b.x], [punto_b.y, punto_b.y], color='orange', linestyle='--', label='Proyección horizontal AB')
+    ax.plot([punto_a.x, punto_a.x], [punto_a.y, punto_b.y], color='orange', linestyle='--', label='Proyección vertical AB')
+    ax.plot([punto_a.x, ne], [np, np], color='brown', linestyle='--', label='Proyección horizontal AP')
+    ax.plot([punto_a.x, punto_a.x], [punto_a.y, np], color='brown', linestyle='--', label='Proyección vertical AP')
 
-    # Etiquetas para los puntos
-    plt.text(punto_a.x, punto_a.y, 'A', fontsize=12, ha='right')
-    plt.text(punto_b.x, punto_b.y, 'B', fontsize=12, ha='right')
-    plt.text(np, ne, 'P', fontsize=12, ha='right')
+    # Añadir etiquetas y leyenda
+    ax.set_xlabel('Coordenada X')
+    ax.set_ylabel('Coordenada Y')
+    ax.set_title('Gráfica de Puntos A, B y P con Proyecciones')
+    ax.legend()
 
-    # Ajustamos los limites a partir de lo que hicimos un poco mas arriba
-    plt.xlim(x_min, x_max)
-    plt.ylim(y_min, y_max)
-
-    # Esta parte solo hace que la grafica se vea un poco mas bonita
-    plt.title('Gráfica de Puntos A, B y P con Proyecciones')
-    plt.xlabel('Coordenada X')
-    plt.ylabel('Coordenada Y')
-    plt.axhline(0, color='black', linewidth=0.5, ls='--')
-    plt.axvline(0, color='black', linewidth=0.5, ls='--')
-    plt.grid(color='gray', linestyle='--', linewidth=0.5)
-    plt.legend()
+    # Mostrar la gráfica con una cuadrícula
+    plt.grid(True)
     plt.show()
     
 if __name__ == "__main__":
