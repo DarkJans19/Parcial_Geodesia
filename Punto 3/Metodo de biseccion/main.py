@@ -6,9 +6,9 @@ def main():
     print("Punto A")
     # En caso de que se quieran puntos en especifico se pueden reemplazar los valores de la siguiente manera
     # punto_a = Punto(float(input()), float(input()), float(input()))
-    punto_a = Punto(101478.649, 101965.783, 63.25)
+    punto_a = Punto(101478.649, 101965.783, 'N',63.25)
     print("Punto B")
-    punto_b = Punto(101435.794, 101913.537, 90.0117)
+    punto_b = Punto(101435.794, 101913.537, 'E', 90.0117)
     
     distancia = punto_a.distancia(punto_b)
     print("Distancia entre dos puntos: ", distancia)

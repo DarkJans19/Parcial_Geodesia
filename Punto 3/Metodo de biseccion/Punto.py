@@ -1,10 +1,17 @@
 import math
 
 class Punto:
-    def __init__(self, x: float, y: float, angulo: float):
+    def __init__(self, x: float, y: float, direccion: str, angulo: float):
         self.x = x
         self.y = y
+        self.direccion = direccion.upper()  # Dirección puede ser N, S, E, W
         self.angulo = angulo
+
+    def ajustar_signo(self, valor: float) -> float:
+        """Ajusta el signo según la dirección."""
+        if self.direccion == 'S' or self.direccion == 'W':
+            return -valor
+        return valor
     
     # Self.x es el valor de x del primer punto y b.x es el valor de X en el segundo punto
     def diferencia_x(self, b: 'Punto') -> float:
