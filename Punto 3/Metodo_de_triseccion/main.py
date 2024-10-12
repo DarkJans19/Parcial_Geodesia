@@ -1,7 +1,40 @@
 from Punto import Punto
 from CoordenadaGMS import CoordenadaGMS
+import matplotlib.pyplot as plt
 
 def main():
+    def graficar_puntos(punto_a, punto_b, punto_c, punto_p):
+        # Extraemos las coordenadas de los puntos
+        x_vals = [punto_a.x, punto_b.x, punto_c.x, punto_p[0]]  # Coordenadas x (ep)
+        y_vals = [punto_a.y, punto_b.y, punto_c.y, punto_p[1]]  # Coordenadas y (ne)
+
+        # Etiquetas para los puntos
+        labels = ['A', 'B', 'C', 'P']
+        
+        # Graficamos los puntos
+        plt.figure()
+        plt.plot(x_vals, y_vals, 'bo')  # 'bo' significa puntos azules
+        for i, label in enumerate(labels):
+            plt.text(x_vals[i], y_vals[i], label, fontsize=12, ha='right')
+
+        # Conectar los puntos con líneas
+        plt.plot([punto_a.x, punto_b.x], [punto_a.y, punto_b.y], 'g--', label='Línea A-B')
+        plt.plot([punto_b.x, punto_c.x], [punto_b.y, punto_c.y], 'g--', label='Línea B-C')
+        plt.plot([punto_c.x, punto_a.x], [punto_c.y, punto_a.y], 'g--', label='Línea C-A')
+
+        # Conectar el nuevo punto P con líneas
+        plt.plot([punto_a.x, punto_p[0]], [punto_a.y, punto_p[1]], 'r-', label='Línea A-P')
+        plt.plot([punto_b.x, punto_p[0]], [punto_b.y, punto_p[1]], 'b-', label='Línea B-P')
+        plt.plot([punto_c.x, punto_p[0]], [punto_c.y, punto_p[1]], 'p-', label='Línea C-P')
+
+        # Agregar detalles a la gráfica
+        plt.xlabel('Coordenadas X')
+        plt.ylabel('Coordenadas Y')
+        plt.title('Gráfico de Puntos A, B, C y P calculado')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+        
     # Puntos
     print("Punto A")
     coord_gms_a = CoordenadaGMS(63, 15, 0)  # Ejemplo de un ángulo en GMS
@@ -31,9 +64,12 @@ def main():
     print("k2", k2)
     print("k3", k3)
 
+    # Calculamos coordenadas del punto P (ep, ne)
     ep, ne = punto_a.coordenadas(punto_b, punto_c, k1, k2, k3)
-    print("ep", ep)
-    print("ne", ne)
+    print("Coordenadas de P: ep =", ep, ", ne =", ne)
+
+    # Graficar los puntos
+    graficar_puntos(punto_a, punto_b, punto_c, (ep, ne))
 
 if __name__ == "__main__":
     main()
