@@ -15,8 +15,12 @@ class CoordenadaGMS():
             radianes = -radianes
         return radianes    
     
-    def diferencia_coordenada_x(self, b):
+    def diferencia_coordenada(self, b):
         diferencia_radianes = self.convertir_a_radianes() - b.convertir_a_radianes()
+        return diferencia_radianes
+    
+    def suma_coordenada(self, b):
+        diferencia_radianes = self.convertir_a_radianes() + b.convertir_a_radianes()
         return diferencia_radianes
     
     def __str__(self):
