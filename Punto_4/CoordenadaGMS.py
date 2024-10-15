@@ -15,6 +15,16 @@ class CoordenadaGMS():
             radianes = -radianes
         return radianes    
     
+    def to_decimal(self):
+        # Convertir grados, minutos y segundos a decimal
+        decimal = self.grados + self.minutos / 60 + self.segundos / 3600
+
+        # Si la dirección es 'S' o 'W', el valor debe ser negativo
+        if self.direccion in ['S', 'W']:
+            decimal = -decimal
+        
+        return decimal
+    
     def __str__(self):
     # Representación de la coordenada
         return f"{self.grados}°{self.minutos}'{self.segundos}\" {self.direccion}"
