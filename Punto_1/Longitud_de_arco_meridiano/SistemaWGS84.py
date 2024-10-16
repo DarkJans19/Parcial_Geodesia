@@ -1,7 +1,8 @@
 import math
 import numpy as np
+
 class SistemaWGS84:   
-    # Constantes, al estar utilizando el sistema WSG84 utilizamos el semieje mayor y menor y calculamos la excentricidad
+    # Constantes del sistema WGS84
     a = 6378137
     b = 6356752.314245
     
@@ -9,33 +10,38 @@ class SistemaWGS84:
     def calcular_excentricidad():
         return math.sqrt(1 - (SistemaWGS84.b**2 / SistemaWGS84.a**2))
     
-    """
-    Toda la formula es: 
-    Tomando y como los angulos de los paralelos
-    a(y1 - y2) - (1-e²)a/2 * sin(2(y1+y2)) * (y2-y1)
-    """
+    @staticmethod
+    def calcular_coeficientes(e):
+        # Coeficientes hasta F, según la fórmula
+        coeficientes = {
+            'A': 1 + (3 / 4) * e**2 + (45 / 64) * e**4 + (175 / 256) * e**6 + (11025 / 16384) * e**8 + (43659 / 65536) * e**10,
+            'B': (3 / 4) * e**2 + (15 / 16) * e**4 + (525 / 512) * e**6 + (2205 / 2048) * e**8 + (72765 / 65536) * e**10,
+            'C': (15 / 64) * e**4 + (105 / 256) * e**6 + (2205 / 4096) * e**8 + (10395 / 16384) * e**10,
+            'D': (35 / 512) * e**6 + (315 / 2048) * e**8 + (31185 / 131072) * e**10,
+            'E': (315 / 16384) * e**8 + (3465 / 65536) * e**10,
+            'F': (693 / 131072) * e**10
+        }
+        return coeficientes
     
     @staticmethod
-    def calcular_longitud_arco_meridiano(delta_y: float, suma_y: float, x: float, e: float):
-        parte_1 = SistemaWGS84.a * (delta_y)
-        parte_2 = ((1 - e **2) * SistemaWGS84.a)/2
-        arg_sen = 2 * suma_y
-        parte_3 = math.sin(arg_sen)
-        parte_4 = parte_2 * parte_3 * delta_y
-        longitud_arco_meridiano = parte_1 - parte_4
-        return longitud_arco_meridiano
-    
-    @staticmethod
-    def graficar_elipsoide():
-        # Crear una malla esférica para el elipsoide
-        u = np.linspace(0, 2 * np.pi, 100)
-        v = np.linspace(0, np.pi, 100)
+    def calcular_longitud_arco_meridiano(delta_y: float, latitud_1: float, latitud_2: float, e: float):
+        # Coeficientes hasta F
+        coeficientes = SistemaWGS84.calcular_coeficientes(e)
+        
+        # Preparamos un bucle para calcular los términos de la serie
+        resultado = coeficientes['A'] * delta_y
+        potencias = [2, 4, 6, 8, 10]  # Las potencias que usamos en los senos
 
-        x = SistemaWGS84.a * np.outer(np.cos(u), np.sin(v))
-        y = SistemaWGS84.b * np.outer(np.sin(u), np.sin(v))
-        z = SistemaWGS84.b * np.outer(np.ones(np.size(u)), np.cos(v))
+        for i, coef in enumerate(['B', 'C', 'D', 'E', 'F']):
+            pot = potencias[i]
+            termino_sin = math.sin(pot * latitud_2) - math.sin(pot * latitud_1)
+            resultado -= (coeficientes[coef] / pot) * termino_sin
+        
+        # Longitud del arco
+        s_AB = SistemaWGS84.a * (1 - e**2) * resultado
+        return s_AB
 
-        return x, y, z
+
 
     @staticmethod
     def graficar_puntos(ax, puntos):

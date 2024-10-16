@@ -14,12 +14,12 @@ def main():
     print(f"Las constantes del sistema son {a} y {b} y la excentricidad es {e}")
     
     # Coordenadas x de ambos puntos
-    punto_a_x = CoordenadaGMS(80, 20, 0, 'E')
-    punto_b_x = CoordenadaGMS(95, 15, 0, 'E')
+    punto_a_x = CoordenadaGMS(3.21666, 0, 0, 'E')
+    punto_b_x = CoordenadaGMS(3.21666, 0, 0, 'E')
 
-    # Coordenadas y de ambos puntos
-    punto_a_y = CoordenadaGMS(20, 30, 0, 'N')
-    punto_b_y = CoordenadaGMS(20, 30, 0, 'N')
+    # Coordenadas en grados, minutos y segundos
+    punto_a_y = CoordenadaGMS(51, 12, 0, 'N')  # Latitud 51.2°
+    punto_b_y = CoordenadaGMS(50, 15, 0, 'N')  # Latitud 50.25°
     
     # Juntamos todas las coordenadas 
     punto_1 = Punto(punto_a_x, punto_a_y)
@@ -27,44 +27,28 @@ def main():
     
     print(punto_1)
     print(punto_2)
-    
-    # Convertimos las coordenadas y de los puntos a radianes
-    punto_a_x = punto_a_x.convertir_a_radianes()
-    punto_a_y = punto_a_y.convertir_a_radianes()
-    punto_b_x = punto_b_x.convertir_a_radianes()
-    punto_b_y = punto_b_y.convertir_a_radianes()
-    
+
+
     # Podemos convertir las coordenadas este oeste y las usamos para calcular el ejercicio
-    latitud_1 = punto_a_y
-    latitud_2 = punto_b_y
+    latitud_1 = punto_a_y.convertir_a_radianes()
+    latitud_2 = punto_b_y.convertir_a_radianes()
     
-    longitud_1 = punto_a_x
+    longitud_1 = punto_a_x.convertir_a_radianes()
     
     # Calculamos la diferencia de coordenadas x entre los puntos
     print("latitud_1:", latitud_1)
     print("latitud_2:", latitud_2)
     print("longitud_1:", longitud_1)
     
-    delta_x = punto_2.x.diferencia_coordenada(punto_1.x)
-    print("delta_x:", delta_x)
+    # Calcular delta_y (la diferencia de latitudes)
+    delta_y = latitud_1 - latitud_2
     
-    delta_y = punto_1.y.diferencia_coordenada(punto_2.y)
-    print("delta_y:", delta_y)
+    # Calcular la longitud del arco de meridiano
+    longitud_arco_meridiano = SistemaWGS84.calcular_longitud_arco_meridiano(delta_y, latitud_1, latitud_2, e)
     
-    suma_y = punto_1.y.suma_coordenada(punto_2.y)
-    print("suma_y:", suma_y)
+    print(f"Longitud de arco de meridiano: {longitud_arco_meridiano:.2f} metros")
     
-    longitud_arco_meridiano = SistemaWGS84.calcular_longitud_arco_meridiano(delta_y, suma_y, longitud_1, e)
-    print("Longitud de arco meridiano:", longitud_arco_meridiano)
-    
-    # Calculamos el area del cuadrilátero
-    area_1 = SistemaWGS84.calcular_valor_interno_area(abs(latitud_1), e)
-    print("area 1:", area_1)
-    area_2 = SistemaWGS84.calcular_valor_interno_area(abs(latitud_2), e)
-    print("area_2:", area_2)
-    area_cuadrilatero = SistemaWGS84.calcular_cuadrilatero(delta_x, area_1, area_2)
-    print("Area del cuadrilátero:", area_cuadrilatero)
-    
+    """
     # Grafica
     puntos = [punto_1, punto_2]
 
@@ -103,6 +87,7 @@ def main():
     ax.set_zlabel('Z (Altura)')
     ax.set_title('Elipsoide de la Tierra con puntos y líneas conectadas')
     plt.show()
+    """
     
 if __name__ == "__main__":
     main()
