@@ -10,40 +10,6 @@ class SistemaWGS84:
         return math.sqrt(1 - (SistemaWGS84.b**2 / SistemaWGS84.a**2))
     
     @staticmethod
-    def calcular_longitud_arco_paralelo(delta_x: float, y: float, e: float) -> float:
-        cos = math.cos(y)
-        sen = math.sin(y)**2
-        factor_ajuste = (e**2) * sen
-        delta_x /= 2 * math.pi
-        numerador = SistemaWGS84.a * cos * 2 * math.pi
-        division = math.sqrt(1 - factor_ajuste)
-        longitud = numerador/division
-        longitud_arco_paralelo = longitud * delta_x 
-        return longitud_arco_paralelo
-    
-
-    """
-    Toda la formula es: 
-    Tomando y como los angulos de los paralelos
-    a(y1 - y2) - (1-e²)a/2 * sin(2(y1+y2)) * (y2-y1)
-    """
-    
-    @staticmethod
-    def calcular_longitud_arco_meridiano(delta_y: float, suma_y: float, x: float, e: float):
-        parte_1 = SistemaWGS84.a * (delta_y)
-        parte_2 = ((1 - e **2) * SistemaWGS84.a)/2
-        arg_sen = 2 * suma_y
-        parte_3 = math.sin(arg_sen)
-        parte_4 = parte_2 * parte_3 * delta_y
-        longitud_arco_meridiano = parte_1 - parte_4
-        return longitud_arco_meridiano
-    
-    """ 
-    Tomando la formula del cuadrilatero suponiendo que 
-    AD = BC
-    Y que AB = CD = L
-    """
-    @staticmethod
     def calcular_valor_interno_area(latitud, e):
         ajuste_excentricidad = 1 - (pow(e, 2) * pow(math.sin(latitud), 2))
         sen_angulo = math.sin(latitud)

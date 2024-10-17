@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from CoordenadaGMS import CoordenadaGMS
-from punto import Punto
+from Punto import Punto
 from SistemaWGS84 import SistemaWGS84
 
 def main():   
@@ -40,11 +40,7 @@ def main():
     punto_a_x = punto_a_x.convertir_a_radianes()
     punto_a_y = punto_a_y.convertir_a_radianes()
     punto_b_x = punto_b_x.convertir_a_radianes()
-    punto_b_y = punto_b_y.convertir_a_radianes()
-    punto_c_x = punto_c_x.convertir_a_radianes()
     punto_c_y = punto_c_y.convertir_a_radianes()
-    punto_d_x = punto_d_x.convertir_a_radianes()
-    punto_d_y = punto_d_y.convertir_a_radianes()
     
     # Podemos convertir las coordenadas este oeste y las usamos para calcular el ejercicio
     latitud_1 = punto_a_y
@@ -61,18 +57,6 @@ def main():
     
     delta_x = punto_4.x.diferencia_coordenada(punto_1.x)
     print("delta_x:", delta_x)
-    
-    delta_y = punto_1.y.diferencia_coordenada(punto_4.y)
-    print("delta_y:", delta_y)
-    
-    suma_y = punto_1.y.suma_coordenada(punto_4.y)
-    print("suma_y:", suma_y)
-    
-    # Podemos calcular la longitud del arco de paralelo y meridiano entre dos puntos
-    longitud_arco_paralelo = SistemaWGS84.calcular_longitud_arco_paralelo(delta_x, latitud_1, e)
-    print("Longitud arco paralelo:", longitud_arco_paralelo)
-    longitud_arco_meridiano = SistemaWGS84.calcular_longitud_arco_meridiano(delta_y, suma_y, longitud_1, e)
-    print("Longitud de arco meridiano:", longitud_arco_meridiano)
     
     # Calculamos el area del cuadrilátero
     area_1 = SistemaWGS84.calcular_valor_interno_area(abs(latitud_1), e)
