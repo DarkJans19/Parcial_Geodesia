@@ -1,10 +1,11 @@
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 class SistemaWGS84:   
     # Constantes del sistema WGS84
-    a = 6378137
-    b = 6356752.314245
+    a = 6378137  # Semi-eje mayor (metros)
+    b = 6356752.314245  # Semi-eje menor (metros)
     
     @staticmethod
     def calcular_excentricidad():
@@ -25,10 +26,8 @@ class SistemaWGS84:
     
     @staticmethod
     def calcular_longitud_arco_meridiano(delta_y: float, latitud_1: float, latitud_2: float, e: float):
-        # Coeficientes hasta F
         coeficientes = SistemaWGS84.calcular_coeficientes(e)
         
-        # Preparamos un bucle para calcular los términos de la serie
         resultado = coeficientes['A'] * delta_y
         potencias = [2, 4, 6, 8, 10]  # Las potencias que usamos en los senos
 
@@ -37,11 +36,20 @@ class SistemaWGS84:
             termino_sin = math.sin(pot * latitud_2) - math.sin(pot * latitud_1)
             resultado -= (coeficientes[coef] / pot) * termino_sin
         
-        # Longitud del arco
         s_AB = SistemaWGS84.a * (1 - e**2) * resultado
         return s_AB
+    
+    @staticmethod
+    def graficar_elipsoide():
+        # Generamos un conjunto de puntos para representar el elipsoide
+        u = np.linspace(0, 2 * np.pi, 100)  # Ángulo azimutal
+        v = np.linspace(0, np.pi, 100)      # Ángulo polar
 
+        x = SistemaWGS84.a * np.outer(np.cos(u), np.sin(v))
+        y = SistemaWGS84.b * np.outer(np.sin(u), np.sin(v))
+        z = SistemaWGS84.b * np.outer(np.ones(np.size(u)), np.cos(v))
 
+        return x, y, z
 
     @staticmethod
     def graficar_puntos(ax, puntos):
@@ -51,7 +59,7 @@ class SistemaWGS84:
             y = punto.y.convertir_a_radianes()
             # Convertir a coordenadas cartesianas
             coord_x = SistemaWGS84.a * np.cos(y) * np.cos(x)
-            coord_y = SistemaWGS84.b * np.cos(y) * np.sin(x)
+            coord_y = SistemaWGS84.a * np.cos(y) * np.sin(x)
             coord_z = SistemaWGS84.b * np.sin(y)
             ax.scatter(coord_x, coord_y, coord_z, s=100)  # Graficar el punto
             coord_puntos.append((coord_x, coord_y, coord_z))  # Guardar las coordenadas

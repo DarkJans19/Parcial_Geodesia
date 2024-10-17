@@ -53,43 +53,41 @@ def main():
     longitud_arco_paralelo = SistemaWGS84.calcular_longitud_arco_paralelo(delta_x, latitud_1, e)
     print("Longitud arco paralelo:", longitud_arco_paralelo)
     
-    # Grafica
+    # Graficar
     puntos = [punto_1, punto_2]
 
     # Graficar el elipsoide
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
+    # Graficar el elipsoide
     x, y, z = SistemaWGS84.graficar_elipsoide()  # Llamar con a y b
     ax.plot_surface(x, y, z, color='b', alpha=0.3)
     
     # Graficar los puntos y obtener sus coordenadas cartesianas
     coord_puntos = SistemaWGS84.graficar_puntos(ax, puntos)
 
-    # Etiquetar los puntos con letras A, B, C, D
-    labels = ['A', 'B', 'C', 'D']  # Etiquetas para los puntos
-    
+    # Etiquetar los puntos con letras A, B
+    labels = ['A', 'B']  # Etiquetas para los puntos
     for i, label in enumerate(labels):
         ax.text(coord_puntos[i][0], coord_puntos[i][1], coord_puntos[i][2], label, color='black', fontsize=12)
 
-    for i, label in enumerate(labels):
-        ax.text(coord_puntos[i][0], coord_puntos[i][1], coord_puntos[i][2], label, color='black', fontsize=12)
-
+    # Conectar los puntos con una línea
+    ax.plot([coord_puntos[0][0], coord_puntos[1][0]], 
+            [coord_puntos[0][1], coord_puntos[1][1]], 
+            [coord_puntos[0][2], coord_puntos[1][2]], color='r', linewidth=2)
     
-    # Unir los puntos para formar un cuadrilátero
-    indices = [0, 1, 3, 2, 0]  # Asegúrate de que los puntos están en el orden correcto
-
-    for i in range(len(indices) - 1):
-        x_values = [coord_puntos[indices[i]][0], coord_puntos[indices[i + 1]][0]]
-        y_values = [coord_puntos[indices[i]][1], coord_puntos[indices[i + 1]][1]]
-        z_values = [coord_puntos[indices[i]][2], coord_puntos[indices[i + 1]][2]]
-        ax.plot(x_values, y_values, z_values, color='r', linewidth=2)
-    
-    # Etiquetas
+    # Configuración de etiquetas
     ax.set_xlabel('X (Eje E-O)')
     ax.set_ylabel('Y (Eje N-S)')
     ax.set_zlabel('Z (Altura)')
-    ax.set_title('Elipsoide de la Tierra con puntos y líneas conectadas')
+    ax.set_title('Elipsoide de la Tierra con puntos y línea conectada')
+
+    # Ajustar límites de los ejes para hacer los puntos más visibles
+    ax.set_xlim([-6500000, 6500000])  # Limites en el eje X
+    ax.set_ylim([-6500000, 6500000])  # Limites en el eje Y
+    ax.set_zlim([-6500000, 6500000])  # Limites en el eje Z
+    
     plt.show()
     
 if __name__ == "__main__":

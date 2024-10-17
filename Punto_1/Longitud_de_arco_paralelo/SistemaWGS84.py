@@ -25,9 +25,9 @@ class SistemaWGS84:
     
     @staticmethod
     def graficar_elipsoide():
-        # Crear una malla esférica para el elipsoide
-        u = np.linspace(0, 2 * np.pi, 100)
-        v = np.linspace(0, np.pi, 100)
+        # Generamos un conjunto de puntos para representar el elipsoide
+        u = np.linspace(0, 2 * np.pi, 100)  # Ángulo azimutal
+        v = np.linspace(0, np.pi, 100)      # Ángulo polar
 
         x = SistemaWGS84.a * np.outer(np.cos(u), np.sin(v))
         y = SistemaWGS84.b * np.outer(np.sin(u), np.sin(v))
@@ -43,7 +43,7 @@ class SistemaWGS84:
             y = punto.y.convertir_a_radianes()
             # Convertir a coordenadas cartesianas
             coord_x = SistemaWGS84.a * np.cos(y) * np.cos(x)
-            coord_y = SistemaWGS84.b * np.cos(y) * np.sin(x)
+            coord_y = SistemaWGS84.a * np.cos(y) * np.sin(x)
             coord_z = SistemaWGS84.b * np.sin(y)
             ax.scatter(coord_x, coord_y, coord_z, s=100)  # Graficar el punto
             coord_puntos.append((coord_x, coord_y, coord_z))  # Guardar las coordenadas
