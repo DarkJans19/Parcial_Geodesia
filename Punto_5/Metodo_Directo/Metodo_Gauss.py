@@ -1,4 +1,3 @@
-# Metodo_Gauss.py
 import math
 from Punto import Punto
 from CoordenadaGMS import CoordenadaGMS
@@ -22,40 +21,31 @@ class MetodoGauss:
     def __init__(self):
         pass
 
-    def metodo_directo(self, punto_inicial: Punto, azimut: float, distancia: float, max_iteraciones=10, tolerancia=1e-6):
-        lat1 = punto_inicial.y.convertir_a_radianes()  # Convertir latitud a radianes
-        lon1 = punto_inicial.x.convertir_a_radianes()  # Convertir longitud a radianes
+    def metodo_directo(self, punto_inicial: Punto, azimut: float, distancia: float):
+        # Convertir las coordenadas iniciales a radianes
+        lat1 = punto_inicial.y.convertir_a_radianes()  # Latitud en radianes
+        lon1 = punto_inicial.x.convertir_a_radianes()  # Longitud en radianes
 
-        # Inicializamos las variables de iteración
-        lat2 = lat1
-        lon2 = lon1
+        # Calcular el radio efectivo de la Tierra basado en la latitud inicial
+        radio_efectivo = calcular_radio_efectivo(math.degrees(lat1))
 
-        for i in range(max_iteraciones):
-            lat_inicial_degrees = math.degrees(lat2)  # Convertimos a grados para calcular el radio efectivo
-            radio_efectivo = calcular_radio_efectivo(lat_inicial_degrees)
+        # Calcular el cambio en latitud y longitud
+        delta_lat = distancia * math.cos(azimut) / radio_efectivo
+        lat2 = lat1 + delta_lat
 
-            # Calcular cambios en latitud y longitud con base en las fórmulas de Gauss
-            delta_lat = distancia * math.cos(azimut) / radio_efectivo
-            lat2_nueva = lat1 + delta_lat
+        delta_lon = (distancia * math.sin(azimut)) / (calcular_radio_efectivo(math.degrees(lat2)) * math.cos(lat2))
+        lon2 = lon1 + delta_lon
 
-            delta_lon = (distancia * math.sin(azimut)) / (calcular_radio_efectivo(math.degrees(lat2_nueva)) * math.cos(lat2_nueva))
-            lon2_nueva = lon1 + delta_lon
+        # Forzar la longitud según la dirección original
+        if punto_inicial.x.direccion == 'W':
+            lon2 = -abs(lon2)  # Asegurarse de que sea negativo
+        elif punto_inicial.x.direccion == 'E':
+            lon2 = abs(lon2)   # Asegurarse de que sea positivo
+        
+        # Calcular el azimut inverso (en grados)
+        azimut_inverso = (math.degrees(azimut) + 180) % 360
 
-            # Comprobar si la diferencia es menor que la tolerancia para detener el bucle
-            if abs(lat2_nueva - lat2) < tolerancia and abs(lon2_nueva - lon2) < tolerancia:
-                lat2 = lat2_nueva
-                lon2 = lon2_nueva
-                break
-
-            # Actualizar latitud y longitud para la siguiente iteración
-            lat2 = lat2_nueva
-            lon2 = lon2_nueva
-
-        # Calcular el azimut inverso usando la fórmula correcta
-        azimut_original_grados = math.degrees(azimut)  # Convertir azimut a grados
-        azimut_inverso = (azimut_original_grados + 180) % 360
-
-        # Convertir los resultados de radianes a GMS
+        # Convertir los resultados de radianes a GMS (Grados, Minutos, Segundos)
         nueva_latitud = self.convertir_a_gms(lat2, 'N' if lat2 >= 0 else 'S')
         nueva_longitud = self.convertir_a_gms(lon2, 'E' if lon2 >= 0 else 'W')
         
