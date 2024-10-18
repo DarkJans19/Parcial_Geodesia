@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.pyplot as plt
 from CoordenadaGMS import CoordenadaGMS
 from punto import Punto
@@ -27,30 +26,21 @@ def main():
     
     print(punto_1)
     print(punto_2)
-
-    
-    # Convertimos las coordenadas y de los puntos a radianes
-    punto_a_x = punto_a_x.convertir_a_radianes()
-    punto_a_y = punto_a_y.convertir_a_radianes()
-    punto_b_x = punto_b_x.convertir_a_radianes()
-    punto_b_y = punto_b_y.convertir_a_radianes()
     
     # Podemos convertir las coordenadas este oeste y las usamos para calcular el ejercicio
-    latitud_1 = punto_a_y
+    latitud_1 = punto_a_y.convertir_a_radianes()
     
-    longitud_1 = punto_a_x
-    longitud_2 = punto_b_x
+    longitud_1 = punto_a_x.convertir_a_radianes()
+    longitud_2 = punto_b_x.convertir_a_radianes()
     
     # Calculamos la diferencia de coordenadas x entre los puntos
     print("latitud_1:", latitud_1)
-    print("longitud_1:", longitud_1)
-    print("longitud_2:", longitud_2)
     
     delta_x = punto_2.x.diferencia_coordenada(punto_1.x)
     print("delta_x:", delta_x)
     
     # Podemos calcular la longitud del arco de paralelo y meridiano entre dos puntos
-    longitud_arco_paralelo = SistemaWGS84.calcular_longitud_arco_paralelo(delta_x, latitud_1, e)
+    longitud_arco_paralelo = SistemaWGS84.calcular_longitud_arco_paralelo(delta_x, latitud_1, e=e)
     print("Longitud arco paralelo:", longitud_arco_paralelo)
     
     # Graficar

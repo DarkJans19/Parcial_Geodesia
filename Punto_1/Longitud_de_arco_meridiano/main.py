@@ -32,14 +32,11 @@ def main():
     latitud_1 = punto_a_y.convertir_a_radianes()
     latitud_2 = punto_b_y.convertir_a_radianes()
     
-    longitud_1 = punto_a_x.convertir_a_radianes()
-    
     # Calcular la diferencia de coordenadas
     delta_y = latitud_1 - latitud_2
     
     # Calcular la longitud del arco de meridiano
     longitud_arco_meridiano = SistemaWGS84.calcular_longitud_arco_meridiano(delta_y, latitud_1, latitud_2, e)
-    
     print(f"Longitud de arco de meridiano: {longitud_arco_meridiano:.2f} metros")
     
     # Graficar
