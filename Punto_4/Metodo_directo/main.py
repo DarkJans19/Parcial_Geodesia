@@ -16,9 +16,10 @@ def aplicar_mercator_inverso(x, y, longitud_referencia):
     print(f"Proyección inversa (Mercator) -> X: {x}, Y: {y} -> Latitud: {latitud}, Longitud: {longitud}")
     return latitud, longitud
 
+
 def main():
     # Cargar el shapefile del mapa de Colombia
-    colombia = gpd.read_file(r"D:\Users\Jan Sanchez\Documents\Repositorios\Programacion\Tarea heidy\Punto_4\Depto.shp")
+    colombia = gpd.read_file(r"Punto_4\Depto.shp")
 
     # Verificar y establecer el CRS del shapefile
     if colombia.crs is None:
